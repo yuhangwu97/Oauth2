@@ -87,14 +87,11 @@ public class FacebookOAuth2Service implements OAuth2Service {
         Map<String, Object> body = response.getBody();
         logger.info("Facebook API响应: {}", body);
         
-        Map<String, Object> picture = (Map<String, Object>) body.get("picture");
-        Map<String, Object> pictureData = picture != null ? (Map<String, Object>) picture.get("data") : null;
-        
         OAuth2UserInfo userInfo = OAuth2UserInfo.builder()
             .id((String) body.get("id"))
             .email((String) body.get("email"))
             .name((String) body.get("name"))
-            .imageUrl(pictureData != null ? (String) pictureData.get("url") : null)
+            .imageUrl(null)  // 不使用头像
             .build();
             
         logger.info("解析后的用户信息:");

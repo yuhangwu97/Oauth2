@@ -16,6 +16,7 @@ public class User {
     private String name;
     private String email;
     private String phone;
+    @Column(length = 500)
     private String imageUrl;
     
     @Enumerated(EnumType.STRING)

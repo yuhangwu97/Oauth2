@@ -3,7 +3,7 @@ class OAuth2Service {
   async login(provider) {
     const state = this.generateRandomState();
     // Google 回调地址使用 yourapp.com
-    const redirectUri = `http://yourapp.com:8080/oauth/callback/${provider}`;
+    const redirectUri = `http://localhost:8080/oauth/callback/${provider}`;
     
     try {
       const response = await fetch('/auth/oauth2/authorize', {
