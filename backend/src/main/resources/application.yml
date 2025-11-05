@@ -1,0 +1,62 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: oauth2-multi-platform
+  
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  
+  redis:
+    host: localhost
+    port: 6379
+    password: 
+    database: 0
+
+app:
+  auth:
+    jwt:
+      secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      expiration:
+        web: 604800000
+        mobile: 2592000000
+        miniapp: 7776000000
+  
+  oauth2:
+    google:
+      client-id: 446804274711-fjevh6bdtigb92hr78df0a206kqlqes9.apps.googleusercontent.com
+      client-secret: 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
+      authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+      token-uri: https://oauth2.googleapis.com/token
+      user-info-uri: https://openidconnect.googleapis.com/v1/userinfo
+      scopes: openid email profile
+    
+    facebook:
+      client-id: 1912281646367499
+      client-secret: 14a765d014592ddddda714808c4898f8
+      authorization-uri: https://www.facebook.com/v18.0/dialog/oauth
+      token-uri: https://graph.facebook.com/v18.0/oauth/access_token
+      user-info-uri: https://graph.facebook.com/me?fields=id,name,email,picture
+      scopes: email,public_profile
+    
+    authorized-redirect-uris:
+      - http://localhost:3000/oauth2/redirect
+      - http://yourapp.com:8080/oauth/callback/google
+      - http://yourapp.com:8080/oauth/callback/facebook

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook OAuth2 测试</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 10px 5px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .facebook-btn {
+            background: #1877f2;
+            color: white;
+        }
+        .facebook-btn:hover {
+            background: #166fe5;
+            transform: translateY(-1px);
+        }
+        .test-btn {
+            background: #28a745;
+            color: white;
+        }
+        .test-btn:hover {
+            background: #218838;
+        }
+        .info {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #007bff;
+        }
+        .code {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔵 Facebook OAuth2 测试</h1>
+        
+        <div class="info">
+            <strong>Client ID:</strong> 1912281646367499<br>
+            <strong>重定向URI:</strong> http://yourapp.com:8080/oauth/callback/facebook
+        </div>
+
+        <h3>测试方法：</h3>
+        
+        <button class="btn facebook-btn" onclick="loginWithFacebookDirect()">
+            📘 直接跳转到Facebook (方法1)
+        </button>
+        
+        <button class="btn test-btn" onclick="loginWithOAuth2Service()">
+            🔄 通过后端API跳转 (方法2)
+        </button>
+
+        <h3>生成的授权URL：</h3>
+        <div id="authUrl" class="code">点击按钮生成...</div>
+
+        <h3>预期流程：</h3>
+        <ol>
+            <li>点击Facebook登录按钮</li>
+            <li>跳转到Facebook授权页面</li>
+            <li>用户授权后，Facebook回调到: <code>http://yourapp.com:8080/oauth/callback/facebook</code></li>
+            <li>后端处理回调，生成JWT token</li>
+            <li>重定向到前端成功页面</li>
+        </ol>
+
+        <div class="info">
+            <strong>注意：</strong> 确保在Facebook开发者控制台中配置了正确的应用域名和重定向URI。
+        </div>
+    </div>
+
+    <script>
+        // 方法1：直接构建Facebook授权URL
+        function loginWithFacebookDirect() {
+            const clientId = '1912281646367499';
+            const redirectUri = 'http://yourapp.com:8080/oauth/callback/facebook';
+            const state = generateRandomState();
+            const scope = 'email,public_profile';
+            
+            const facebookAuthUrl = `https://www.facebook.com/v18.0/dialog/oauth?` +
+                `client_id=${clientId}&` +
+                `redirect_uri=${encodeURIComponent(redirectUri)}&` +
+                `response_type=code&` +
+                `scope=${scope}&` +
+                `state=${state}`;
+            
+            // 显示生成的URL
+            document.getElementById('authUrl').textContent = facebookAuthUrl;
+            
+            // 跳转到Facebook
+            console.log('跳转到Facebook授权页面:', facebookAuthUrl);
+            window.location.href = facebookAuthUrl;
+        }
+
+        // 方法2：通过后端API
+        async function loginWithOAuth2Service() {
+            try {
+                const state = generateRandomState();
+                const response = await fetch('/auth/oauth2/authorize', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        provider: 'FACEBOOK',
+                        platform: 'WEB',
+                        redirectUri: 'http://yourapp.com:8080/oauth/callback/facebook',
+                        state: state
+                    })
+                });
+                
+                const data = await response.json();
+                
+                // 显示生成的URL
+                document.getElementById('authUrl').textContent = data.authorizationUrl;
+                
+                // 跳转到Facebook
+                console.log('通过后端API跳转:', data.authorizationUrl);
+                window.location.href = data.authorizationUrl;
+                
+            } catch (error) {
+                console.error('Facebook登录失败:', error);
+                alert('登录失败: ' + error.message);
+            }
+        }
+
+        // 生成随机state
+        function generateRandomState() {
+            return Math.random().toString(36).substring(2, 15) + 
+                   Math.random().toString(36).substring(2, 15) +
+                   Date.now().toString(36);
+        }
+
+        // 页面加载时显示当前配置
+        window.onload = function() {
+            console.log('Facebook OAuth2 测试页面已加载');
+            console.log('Client ID:', '1912281646367499');
+            console.log('重定向URI:', 'http://yourapp.com:8080/oauth/callback/facebook');
+        };
+    </script>
+</body>
+</html>
