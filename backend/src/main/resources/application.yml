@@ -56,7 +56,16 @@ app:
       user-info-uri: https://graph.facebook.com/me?fields=id,name,email
       scopes: email,public_profile
     
+    apple:
+      client-id: ${APPLE_CLIENT_ID:com.yourapp.service}
+      team-id: ${APPLE_TEAM_ID:YOUR_TEAM_ID}
+      key-id: ${APPLE_KEY_ID:YOUR_KEY_ID}
+      authorization-uri: https://appleid.apple.com/auth/authorize
+      token-uri: https://appleid.apple.com/auth/token
+      scopes: name email
+    
     authorized-redirect-uris:
       - http://localhost:3000/oauth2/redirect
-      - http://localhost:8080/oauth/callback/google
-      - http://localhost:8080/oauth/callback/facebook
+      - http://localhost:8080/auth/oauth2/callback/google
+      - http://localhost:8080/auth/oauth2/callback/facebook
+      - http://localhost:8080/auth/oauth2/callback/apple
