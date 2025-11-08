@@ -49,6 +49,31 @@
   cursor: pointer;
   transition: all 0.3s ease;
   color: white;
+  position: relative;
+}
+
+.login-btn:disabled,
+.login-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(50%);
+}
+
+.login-btn:disabled:hover,
+.login-btn.disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.disabled-badge {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  font-size: 10px;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 400;
 }
 
 .btn-icon {
@@ -60,7 +85,7 @@
   background: #4285f4;
 }
 
-.google-btn:hover {
+.google-btn:hover:not(:disabled):not(.disabled) {
   background: #357ae8;
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(66, 133, 244, 0.4);
@@ -70,7 +95,7 @@
   background: #1877f2;
 }
 
-.facebook-btn:hover {
+.facebook-btn:hover:not(:disabled):not(.disabled) {
   background: #166fe5;
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(24, 119, 242, 0.4);
@@ -80,7 +105,7 @@
   background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
 }
 
-.instagram-btn:hover {
+.instagram-btn:hover:not(:disabled):not(.disabled) {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(188, 24, 136, 0.4);
 }
@@ -89,10 +114,51 @@
   background: #000;
 }
 
-.apple-btn:hover {
+.apple-btn:hover:not(:disabled):not(.disabled) {
   background: #333;
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+.twitter-btn {
+  background: #1da1f2;
+}
+
+.twitter-btn:hover:not(:disabled):not(.disabled) {
+  background: #1a91da;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(29, 161, 242, 0.4);
+}
+
+.default-btn {
+  background: #6c757d;
+}
+
+.default-btn:hover:not(:disabled):not(.disabled) {
+  background: #5a6268;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
+}
+
+.login-divider {
+  display: flex;
+  align-items: center;
+  margin: 25px 0;
+  text-align: center;
+}
+
+.login-divider::before,
+.login-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e0e0e0;
+}
+
+.login-divider span {
+  padding: 0 15px;
+  font-size: 14px;
+  color: #999;
 }
 
 .login-footer {

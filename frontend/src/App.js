@@ -13,6 +13,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/oauth2/success" element={<OAuth2RedirectHandler />} />
         <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
         <Route 
           path="/home" 
